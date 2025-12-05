@@ -1,0 +1,3 @@
+[submodule "lib/streampu"]
+	path = lib/streampu
+	url = git@github.com:aff3ct/streampu.git
