@@ -1,13 +1,14 @@
 /**
  * @file UdpReassembler.hpp
  * @brief Logic for reassembling fragmented UDP frames for Streampu.
- * * FIX APPLIED: Correctly handles exact frame size by detecting the length of the last fragment.
+ *
+ * FIX APPLIED: Correctly handles exact frame size by detecting the length of the last fragment.
  */
 
 #ifndef UDP_REASSEMBLER_HPP
 #define UDP_REASSEMBLER_HPP
 
-#include "streampu_protocol.h"
+#include "spu_udp_protocol.h" // Updated include
 #include <vector>
 #include <map>
 #include <cstring>
@@ -27,8 +28,8 @@ private:
         std::vector<uint8_t> buffer;
         std::vector<bool> received_mask;
         size_t received_count;
-        uint16_t total_frags;
-        size_t final_data_size; // <--- NEW: Stores the detected exact size
+        uint32_t total_frags;   // Updated type
+        size_t final_data_size;
         std::chrono::steady_clock::time_point last_update;
     };
 
@@ -40,10 +41,10 @@ private:
 public:
     UdpReassembler() = default;
 
-    Result add_fragment(const StreampuHeader& header, const void* payload, size_t payload_len) {
+    Result add_fragment(const SpuUdpHeader& header, const void* payload, size_t payload_len) { // Updated type
         Result res = {false, {}, header.frame_id};
 
-        if (payload_len > STREAMPU_MAX_PAYLOAD) return res;
+        if (payload_len > SPU_UDP_MAX_PAYLOAD) return res; // Updated constant
 
         // Cleanup logic...
         if (pending_frames_.size() >= MAX_PENDING_FRAMES) {
@@ -57,9 +58,9 @@ public:
             IncompleteFrame new_frame;
 
             // Allocate max theoretical size initially
-            size_t total_max_size = static_cast<size_t>(header.total_frags) * STREAMPU_MAX_PAYLOAD;
+            size_t total_max_size = static_cast<size_t>(header.total_frags) * SPU_UDP_MAX_PAYLOAD; // Updated constant
 
-            if (total_max_size > STREAMPU_MAX_FRAME_SIZE) return res;
+            if (total_max_size > SPU_UDP_MAX_FRAME_SIZE) return res; // Updated constant
 
             try {
                 new_frame.buffer.resize(total_max_size);
@@ -81,10 +82,8 @@ public:
         if (header.frag_index >= frame.total_frags) return res;
         if (frame.received_mask[header.frag_index]) return res;
 
-        // --- NEW LOGIC START ---
-
         // 1. Copy Data
-        size_t offset = static_cast<size_t>(header.frag_index) * STREAMPU_MAX_PAYLOAD;
+        size_t offset = static_cast<size_t>(header.frag_index) * SPU_UDP_MAX_PAYLOAD; // Updated constant
         if (offset + payload_len <= frame.buffer.size()) {
             std::memcpy(frame.buffer.data() + offset, payload, payload_len);
         }
@@ -93,8 +92,6 @@ public:
         if (header.frag_index == header.total_frags - 1) {
             frame.final_data_size = offset + payload_len;
         }
-
-        // --- NEW LOGIC END ---
 
         frame.received_mask[header.frag_index] = true;
         frame.received_count++;
