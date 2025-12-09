@@ -132,12 +132,14 @@ void receive_loop() {
 
         int fd = socket_.get_fd();
 
-        // Timeout configuration for recvmmsg (1 second)
-        struct timespec timeout;
-        timeout.tv_sec = 1;
-        timeout.tv_nsec = 0;
 
         while (running_) {
+
+            // Timeout configuration for recvmmsg (1 second)
+            struct timespec timeout;
+            timeout.tv_sec = 1;
+            timeout.tv_nsec = 0;
+
             // THE MAGIC CALL
             // Asks Linux: "Fill as many of these 64 slots as you can, right now."
             // It returns immediately if data is there, or waits up to timeout.
