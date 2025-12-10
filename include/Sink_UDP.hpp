@@ -38,10 +38,9 @@ public:
 
     virtual Sink_UDP<B>* clone() const
     {
-        // Similar to Source, cloning a Sink implies multiple threads sending to the same IP/Port.
-        // UdpSink seems stateless enough (apart from frame_counter) to maybe allow it,
-        // but let's block it for safety in this demo.
-        throw tools::runtime_error(__FILE__, __LINE__, __func__, "Cloning Sink_UDP is not supported in this demo.");
+        // Cloning is strictly forbidden for this class.
+        std::cerr << "Fatal: cloning Sink_UDP is not allowed." << std::endl;
+        std::terminate();
     }
 
 protected:

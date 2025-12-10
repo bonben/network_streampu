@@ -15,6 +15,8 @@ add_executable(lolpu ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 add_executable(test_udp_chain ${CMAKE_CURRENT_SOURCE_DIR}/src/test_udp_chain.cpp)
 add_executable(tx_main ${CMAKE_CURRENT_SOURCE_DIR}/src/tx_main.cpp)
 add_executable(rx_main ${CMAKE_CURRENT_SOURCE_DIR}/src/rx_main.cpp)
+add_executable(rx_continuous ${CMAKE_CURRENT_SOURCE_DIR}/src/rx_continuous.cpp)
+add_executable(tx_continuous ${CMAKE_CURRENT_SOURCE_DIR}/src/tx_continuous.cpp)
 add_executable(UdpReassembler_test ${CMAKE_CURRENT_SOURCE_DIR}/src/UdpReassembler_test.cpp)
 
 # add include directories -----------------------------------------------------
@@ -22,6 +24,8 @@ target_include_directories(lolpu PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(test_udp_chain PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(tx_main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(rx_main PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(rx_continuous PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_include_directories(tx_continuous PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(UdpReassembler_test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # link with `StreamPU` static lib --------------------------------------------
@@ -29,6 +33,8 @@ target_link_libraries(lolpu PUBLIC spu-static-lib)
 target_link_libraries(test_udp_chain PUBLIC spu-static-lib)
 target_link_libraries(tx_main PUBLIC spu-static-lib)
 target_link_libraries(rx_main PUBLIC spu-static-lib)
+target_link_libraries(rx_continuous PUBLIC spu-static-lib)
+target_link_libraries(tx_continuous PUBLIC spu-static-lib)
 target_link_libraries(UdpReassembler_test PUBLIC spu-static-lib)
 
 # find and link with thread library ------------------------------------------

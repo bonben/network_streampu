@@ -46,12 +46,9 @@ public:
 
     virtual Source_UDP<B>* clone() const
     {
-        // Cloning network sockets is tricky.
-        // For parallel execution, StreamPU clones modules.
-        // A simple clone would try to bind the same port twice, which fails.
-        // In this specific context, deep cloning needs careful architecture (e.g., shared socket).
-        // For this basic test, we throw to warn if someone tries multithreaded source.
-        throw tools::runtime_error(__FILE__, __LINE__, __func__, "Cloning Source_UDP is not supported in this demo.");
+        // Cloning is strictly forbidden for this class.
+        std::cerr << "Fatal: cloning Source_UDP is not allowed." << std::endl;
+        std::terminate();
     }
 
 protected:

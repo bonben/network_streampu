@@ -11,7 +11,7 @@
 #endif
 
 #include "UdpSocket.hpp"
-#include "UdpReassembler.hpp" // Implicitly pulls in spu_udp_protocol.h
+#include "UdpReassembler.hpp"
 #include <thread>
 #include <atomic>
 #include <queue>

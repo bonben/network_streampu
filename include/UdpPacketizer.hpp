@@ -9,7 +9,7 @@
 #ifndef UDP_PACKETIZER_HPP
 #define UDP_PACKETIZER_HPP
 
-#include "spu_udp_protocol.h" // Updated include
+#include "spu_udp_protocol.h"
 #include <vector>
 #include <sys/uio.h> // For struct iovec
 #include <stdexcept>
